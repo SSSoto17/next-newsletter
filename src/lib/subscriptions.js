@@ -59,15 +59,3 @@ export async function getSubById(id) {
   const data = await response.json();
   return data.find((sub) => sub.id == id);
 }
-
-// let response = await fetch(
-//   "https://bjygrojbelrzildufniz.supabase.co/rest/v1/subscriptions?id=eq.16",
-//   {
-//     method: "PATCH",
-//     body: bodyContent,
-//     headers: headersList,
-//   }
-// );
-
-// let data = await response.text();
-// console.log(data);
