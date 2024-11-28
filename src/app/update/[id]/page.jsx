@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function page({ params }) {
   const { id } = await params;
-  const subscriber = await getSubById(id);
+  const [{ name, email }] = await getSubById(id);
 
   return (
     <main className="min-h-full py-12 grid gap-y-14">
@@ -23,7 +23,7 @@ export default async function page({ params }) {
             Edit subscription
           </h1>
         </header>
-        <EditSubscription {...subscriber} />
+        <EditSubscription id={id} name={name} email={email} />
       </section>
     </main>
   );

@@ -51,11 +51,11 @@ export async function patchSub(editedData) {
 }
 
 export async function getSubById(id) {
-  const response = await fetch(endpoint, {
+  const response = await fetch(endpoint + `?id=eq.${id}`, {
     method: "GET",
     headers: headersList,
   });
 
   const data = await response.json();
-  return data.find((sub) => sub.id == id);
+  return data;
 }

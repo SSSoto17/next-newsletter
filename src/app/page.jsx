@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { IoIosArrowForward } from "react-icons/io";
 
 import Link from "next/link";
+import Button from "@/components/Button";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
   );
 }
 
+// SIGN UP
 export async function Subscribe() {
   async function submitData(formData) {
     "use server";
@@ -67,6 +69,7 @@ export async function Subscribe() {
   );
 }
 
+// SUBSCRIBERS SECTION
 export function Subscribers() {
   return (
     <article className="grid gap-y-6">
@@ -76,6 +79,7 @@ export function Subscribers() {
   );
 }
 
+// SUBSCRIBERS LIST
 export async function SubscribersList() {
   const subscribers = await getSubs();
 
