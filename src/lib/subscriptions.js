@@ -1,5 +1,5 @@
-const endpoint = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const endpoint = process.env.SUPABASE_URL;
+const key = process.env.SUPABASE_ANON_KEY;
 
 const headersList = {
   Accept: "application/json",
