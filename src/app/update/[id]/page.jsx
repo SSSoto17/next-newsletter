@@ -41,8 +41,11 @@ export async function EditSubscription({ id, name, email }) {
 
     await patchSub(data);
 
-    revalidatePath("/");
-    redirect("/");
+    if (data.name === name && data.email === email) {
+      revalidatePath("/"), redirect("/");
+    } else {
+      revalidatePath("/"), redirect(`/?updated=${id}`);
+    }
   }
 
   async function unsubscribe() {

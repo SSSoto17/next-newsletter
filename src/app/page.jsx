@@ -1,11 +1,11 @@
-import { getSubs, postSub } from "@/lib/subscriptions";
-import { revalidatePath } from "next/cache";
+import { getSubs } from "@/lib/subscriptions";
 import { IoIosArrowForward } from "react-icons/io";
+import { Subscribe } from "@/components/SubscribeForm";
 
 import Link from "next/link";
-import Button from "@/components/Button";
 
-export default function Home() {
+export default async function Home({ searchParams }) {
+  const { updated } = await searchParams;
   return (
     <main className="min-h-full py-12 grid gap-y-14">
       <section className="[&>*+*]:mt-8">
@@ -13,80 +13,34 @@ export default function Home() {
         <Subscribe />
       </section>
       <section className="border-t border-slate-100 py-4">
-        <Subscribers />
+        <Subscribers updated={updated} />
       </section>
     </main>
   );
 }
 
-// SIGN UP
-export async function Subscribe() {
-  async function submitData(formData) {
-    "use server";
-
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-    };
-
-    await postSub(data);
-
-    revalidatePath("/");
-  }
-
-  return (
-    <form
-      action={submitData}
-      className="grid gap-y-4 max-w-sm m-auto p-12 md:p-16 bg-white drop-shadow-md rounded-xl"
-    >
-      <h2 className="text-2xl font-bold cursor-default">Sign Up</h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-x-2 items-center">
-        <label htmlFor="id-name" className="text-lg font-semibold">
-          Name
-        </label>
-        <input
-          id="id-name"
-          type="text"
-          name="name"
-          className="col-span-2 sm:col-span-3 border border-slate-200 rounded-sm py-1 px-2"
-        />
-      </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-x-2 items-center">
-        <label htmlFor="id-email" className="text-lg font-semibold">
-          Email
-        </label>
-        <input
-          id="id-email"
-          type="email"
-          name="email"
-          className="col-span-2 sm:col-span-3 border border-slate-200 rounded-sm py-1 px-2"
-        />
-      </div>
-      <button className="bg-indigo-600 text-slate-50 text-lg w-full mt-4 py-3 px-6 rounded-md place-self-center hover:bg-indigo-500 active:bg-indigo-700 transition-colors duration-150">
-        Subscribe
-      </button>
-    </form>
-  );
-}
-
 // SUBSCRIBERS SECTION
-export function Subscribers() {
+export function Subscribers({ updated }) {
   return (
     <article className="grid gap-y-6">
       <h2 className="text-xl font-bold cursor-default">Subscribers</h2>
-      <SubscribersList />
+      <SubscribersList updated={updated} />
     </article>
   );
 }
 
 // SUBSCRIBERS LIST
-export async function SubscribersList() {
+export async function SubscribersList({ updated }) {
   const subscribers = await getSubs();
 
   return (
     <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 md:gap-4">
       {subscribers.map((sub) => (
-        <li key={sub.id}>
+        <li
+          data-updated={sub.id.toString() === updated}
+          key={sub.id}
+          className="data-[updated=true]:outline data-[updated=true]:outline-indigo-100 rounded-md"
+        >
           <Link
             href={`/update/${sub.id}`}
             className="bg-white drop-shadow-md px-12 py-14 sm:px-6 sm:py-10 md:py-12 md:px-10 rounded-md grid grid-cols-4 gap-x-2 items-center"
